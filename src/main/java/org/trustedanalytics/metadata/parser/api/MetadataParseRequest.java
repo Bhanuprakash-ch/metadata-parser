@@ -15,16 +15,12 @@
  */
 package org.trustedanalytics.metadata.parser.api;
 
-import java.net.URI;
-import java.util.UUID;
-
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
-import org.trustedanalytics.metadata.parser.HdfsRequestException;
+import java.net.URI;
+import java.util.UUID;
 
 @Data
 public class MetadataParseRequest {
@@ -40,7 +36,7 @@ public class MetadataParseRequest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataParseRequest.class);
 
-    private static final CharSequence HDFS_FULL_PATH_INDICATOR = "hdfs://";
+
 
     @Override
     public String toString() {
@@ -49,17 +45,5 @@ public class MetadataParseRequest {
                 + ", category=" + category + ", orgUUID=" + orgUUID + ", publicRequest=" + publicRequest + "]";
     }
 
-    public void adjustHdfsRequest(String objectStoreId) throws HdfsRequestException {
-        int objectStorePartIdx = source.indexOf(objectStoreId);
-        if (objectStorePartIdx == -1) {
-            throw new HdfsRequestException("Hdfs path "+ source +" is outside current object store: " + objectStoreId);
-        }               
-        this.idInObjectStore = source.substring(objectStorePartIdx + objectStoreId.length());
-        LOGGER.info(toString());
-    }
-    
-    @JsonIgnore
-    public boolean isFullHdfsPath() {
-        return source.contains(HDFS_FULL_PATH_INDICATOR);
-    }
+
 }
